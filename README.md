@@ -6,10 +6,11 @@ If you don't have access to their source code, you will have to switch off the $
 
 Tests: resamples up and down.  
      
+Precompiled EXE file available:
 ![Screenshot](/About/screenshot.png)     
 
  ------------------------------------------------------------------------------------------------------------
 
-   Conclusions    
-     In general, all tested algorithms seem suitable to resize down a high res image but some are faster than others.  
-     The winner is Windows.StretchBlt.  
+Conclusions    
+   In general, all tested algorithms seem suitable to resize down a high res image but some are faster than others.  
+   The winner is Windows.StretchBlt.  
