@@ -11,7 +11,12 @@ UNIT TesterForm;
      The test include also some personal or 3rd party algorithms.
      If you don't have access to their source code, you will have to switch off the $3RDPARTY switch.
 
-   Test resamples up and down.
+   Tests:
+     Resample up
+     Resample down.
+
+   Requires the LightSaber library:
+     https://github.com/GabrielOnDelphi/Delphi-LightSaber
 
  ------------------------------------------------------------------------------------------------------------
 
