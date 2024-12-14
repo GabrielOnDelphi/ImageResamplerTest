@@ -6,7 +6,7 @@
 
      Tests: resamples up and down.  
      
-![Screenshot](/about/screenshot.png)     
+![Screenshot](/About/screenshot.png)     
 
  ------------------------------------------------------------------------------------------------------------
 
