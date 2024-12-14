@@ -80,3 +80,4 @@ __recovery/
 modules/
 *.ion
 /Output
+/About/source.png
