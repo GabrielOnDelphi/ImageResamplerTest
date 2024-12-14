@@ -1,10 +1,10 @@
 # ImageResamplerTest
  
-     Tests multiple (13) Delphi resizing algorithms that can be found on the Internet for free to find the best one.  
-     The test include also some personal or 3rd party algorithms.  
-     If you don't have access to their source code, you will have to switch off the $3RDPARTY switch.  
+Tests multiple (13) Delphi resizing algorithms that can be found on the Internet for free to find the best one.  
+The test include also some personal or 3rd party algorithms.  
+If you don't have access to their source code, you will have to switch off the $3RDPARTY switch.  
 
-     Tests: resamples up and down.  
+Tests: resamples up and down.  
      
 ![Screenshot](/About/screenshot.png)     
 
