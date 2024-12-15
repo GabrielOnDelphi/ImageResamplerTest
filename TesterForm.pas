@@ -22,7 +22,9 @@ UNIT TesterForm;
 
    Conclusions
      In general, all tested algorithms seem suitable to resize down a high res image but some are faster than others.
-     The winner is Windows.StretchBlt
+     The story is different when you try to resize up (a small res image to high resolution).
+
+     The winner is Windows.StretchBlt. See StretchF in cGraphResizeWin.
 
 
    Also see: https://msdn.microsoft.com/en-us/library/windows/desktop/dd162950(v=vs.85).aspx
@@ -124,14 +126,15 @@ IMPLEMENTATION {$R *.dfm}
 
 {$DEFINE HardID}      // Undefine if you don't have the Hardware ID Extractor lib  https://GabrielMoraru.com/my-delphi-code/delphi-libraries/hardware-id-extractor/
 {$DEFINE HBert}       // Undefine if you don't have the HBert lib
-{$DEFINE 3rdPARTY}    // Undefine if you don't have these 3rd party libs. They are free libraries. You can get them from Internet
+{$DEFINE 3rdPARTY}    // Undefine if you don't have these 3rd party libs. They are free libraries. You can get them from: github.com/graphics32/graphics32, JanFX (Jedi lib)
+{.DEFINE FastJpg}     // USE THIS IN "PROJECT OPTIONS"! Undefine if you don't have this 3rd party lib. You can get it for free from www.github.com/galfar/PasJpeg2000
 
 USES
    {$IFDEF HardID} chHardID, {$ENDIF}
    {$IFDEF HBert}  GraphHBResize, {$ENDIF}
    {$IFDEF 3RDPARTY} janFXStretch, GraphSmoothResizeASM, GraphMadGraphics32, {$ENDIF}
    cmMath, cmSound, cmDebugger, ccColors,
-   cGraphResize, cGraphResizeGr32, cGraphResizeFMX, cGraphResizeWin, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeVCL, cGraphResizeMsThumb;
+   cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeFMX, cGraphResizeWin, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeMsThumb;
 
 
 
@@ -340,7 +343,7 @@ begin
   Trim24;
 
   TimerStart;
-  Stretch_(Loader, BmpOut, ResampleFilters[SpinEdit1.Value].Filter, ResampleFilters[SpinEdit1.Value].Width);
+  janFxStretch.Stretch_(Loader, BmpOut, ResampleFilters[SpinEdit1.Value].Filter, ResampleFilters[SpinEdit1.Value].Width);
 
   AlgorithmName:= '02 JanFX Stretch-'+ i2s(SpinEdit1.Value);
   LogTime(AlgorithmName, TimerElapsed);

@@ -80,6 +80,7 @@
         <DCC_Alignment>2</DCC_Alignment>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
+        <DCC_UnitSearchPath>c:\Projects\LightSaber\;c:\Projects-3rd_Packages\Third party packages\;c:\Projects-3rd_Packages\Third party packages\JanFX\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Define>FastJpg;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
@@ -140,23 +141,9 @@
         <DCCReference Include="TesterForm.pas">
             <Form>frmResample</Form>
         </DCCReference>
-        <DCCReference Include="C:\LightSaber\cbAppData.pas"/>
-        <DCCReference Include="C:\LightSaber\ccINIFile.pas"/>
-        <DCCReference Include="C:\LightSaber\cGraphResize.pas"/>
-        <DCCReference Include="C:\LightSaber\cGraphResizeGr32.pas"/>
-        <DCCReference Include="C:\Projects-3rd_Packages\Third party packages\GraphSmoothResizeASM.pas"/>
-        <DCCReference Include="C:\Projects-3rd_Packages\Third party packages\GraphMadGraphics32.pas"/>
-        <DCCReference Include="C:\Projects-3rd_Packages\Third party packages\JanFX\janFX.pas"/>
-        <DCCReference Include="C:\Projects-3rd_Packages\Third party packages\JanFX\janFxStretch.pas"/>
-        <DCCReference Include="C:\LightSaber\FormRamLog.pas">
-            <FormType>dfm</FormType>
-        </DCCReference>
-        <DCCReference Include="C:\LightSaber\cGraphResizeVCL.pas"/>
-        <DCCReference Include="C:\LightSaber\cGraphResizeParamFrame.pas"/>
-        <DCCReference Include="C:\LightSaber\cGraphResizeParams.pas"/>
-        <DCCReference Include="C:\LightSaber\cGraphResizeWin.pas"/>
-        <DCCReference Include="C:\LightSaber\cGraphResizeFMX.pas"/>
-        <DCCReference Include="C:\Projects-3rd_Packages\Third party packages\GraphHBResize.pas"/>
+        <DCCReference Include="..\LightSaber\cbAppData.pas"/>
+        <DCCReference Include="..\LightSaber\FormRamLog.pas"/>
+        <DCCReference Include="..\LightSaber\ccINIFile.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
