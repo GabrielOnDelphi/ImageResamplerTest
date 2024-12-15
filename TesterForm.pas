@@ -74,8 +74,8 @@ type
     Path                    : TCubicPathEdit;
     SpinEdit1               : TSpinEdit;
     spnGr32Filter           : TSpinEdit;
-    btnHBQckDwn: TButton;
-    btnHBHard: TButton;
+    btnHBQckDwn             : TButton;
+    btnHBHard               : TButton;
     Panel5                  : TPanel;
     btnOrig                 : TButton;
     btnRefresh              : TButton;
@@ -86,7 +86,8 @@ type
     Panel7                  : TPanel;
     Panel6                  : TPanel;
     Preview                 : TImage;
-    chkStretch: TCubicCheckBox;
+    chkStretch              : TCubicCheckBox;
+    chkSaveOutput           : TCubicCheckBox;
     procedure actBitBltExecute             (Sender: TObject);
     procedure actDephiStrtchDrwExecute     (Sender: TObject);
     procedure actFMXGraphicsExecute        (Sender: TObject);
@@ -111,12 +112,12 @@ type
     BmpOut: Vcl.Graphics.TBitmap;
     Loader: Vcl.Graphics.TBitmap;
     function Ratio: Double;
-    procedure LogTime(AlgorithmName: string; Time: Double);
+    procedure TimerStop(AlgorithmName: string; Time: Double);
     procedure Trim24;
-    procedure Trim32;
     function  NewHeight: Integer;
     function  Scale: Double;
-    procedure LateInitialize(VAR Msg: TMessage); message MSG_LateFormInit; // Called after the main form was fully initilized
+    procedure LateInitialize(VAR Msg: TMessage); message MSG_LateFormInit;
+    procedure ShowOutput(FileName: string); // Called after the main form was fully initilized
  end;
 
 VAR
@@ -259,6 +260,8 @@ begin
   Caption:= '';
   Preview.Picture := NIL;
   ClearBitmap(BmpOut);
+
+  // Most algorithms require pf24
   BmpOut.PixelFormat:= pf24bit;
   Loader.PixelFormat:= pf24bit;
 
@@ -266,29 +269,12 @@ begin
   if chkTrimRam.Checked then chHardID.TrimWorkingSet;
   {$ENDIF}
 
-  VAR NewHeight:= RoundEx(spnWidth.Value / Ratio);
+  //VAR NewHeight:= RoundEx(spnWidth.Value / Ratio);
   BmpOut.SetSize(spnWidth.Value, NewHeight);
 end;
 
 
-procedure TfrmResample.Trim32;
-begin
-  Caption:= '';
-  Preview.Picture := NIL;
-  ClearBitmap(BmpOut);
-  BmpOut.PixelFormat:= pf32bit;
-  Loader.PixelFormat:= pf32bit;
-
-  {$IFDEF HardID}
-  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
-  {$ENDIF}
-
-  VAR NewHeight:= RoundEx(spnWidth.Value / Ratio);
-  BmpOut.SetSize(spnWidth.Value, NewHeight);
-end;
-
-
-procedure TfrmResample.LogTime(AlgorithmName: string; Time: Double);
+procedure TfrmResample.TimerStop(AlgorithmName: string; Time: Double);
 begin
   VAR s:= IntToStr(Round(Time))+ 'ms';
   {$IFDEF HardID}
@@ -305,6 +291,14 @@ begin
 end;
 
 
+
+procedure TfrmResample.ShowOutput(FileName: string);
+begin
+  if chkSaveOutput.Checked
+  then BmpOut.SaveToFile(FileName);
+  Preview.Picture.Assign(BmpOut);
+  Bip30;
+end;
 
 
 
@@ -323,13 +317,9 @@ begin
 
   TimerStart;
   SmoothResize(Loader, BmpOut);        //  BmpOut.PixelFormat:= pf24bit;
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
@@ -341,17 +331,13 @@ procedure TfrmResample.actJanFxStretchExecute(Sender: TObject);
 VAR AlgorithmName: string;
 begin
   Trim24;
+  AlgorithmName:= '02 JanFX Stretch-'+ i2s(SpinEdit1.Value);
 
   TimerStart;
   janFxStretch.Stretch_(Loader, BmpOut, ResampleFilters[SpinEdit1.Value].Filter, ResampleFilters[SpinEdit1.Value].Width);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  AlgorithmName:= '02 JanFX Stretch-'+ i2s(SpinEdit1.Value);
-  LogTime(AlgorithmName, TimerElapsed);
-
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
@@ -366,12 +352,9 @@ begin
 
   TimerStart;
   cGraphResizeGr32.StretchGr32(BmpOut, Scale, Scale, spnGr32Filter.Value, MitchellKernel);
-  LogTime('03 Gr32-'+ i2s(spnGr32Filter.Value), TimerElapsed);
+  TimerStop('03 Gr32-'+ i2s(spnGr32Filter.Value), TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName('03 Gr32 '+ i2s(spnGr32Filter.Value), TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName('03 Gr32 '+ i2s(spnGr32Filter.Value), TimerElapsed));
 end;
 
 
@@ -382,80 +365,69 @@ end;
    Resize down: VERY smooth. Better q than JanFX.SmoothResize.
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actHBResizeExecute(Sender: TObject);
-CONST
-    AlgorithmName= '04 HB';
+CONST AlgorithmName= '04 HB';
 begin
   Trim24;
 
   TimerStart;
   {$IFDEF 3RDPARTY}
   GraphHBResize.HSmoothResize(Loader, BmpOut, spnWidth.Value, newHeight); {$ENDIF}
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
 procedure TfrmResample.btnHBQckDwnClick(Sender: TObject);
-CONST
-    AlgorithmName= '04a HB HardDownscale';
+CONST AlgorithmName= '04a HB HardDownscale';
 begin
   Trim24;
   BmpOut.Assign(Loader);
 
   TimerStart;
   {$IFDEF 3RDPARTY} GraphHBResize.QuickDownscaleFac2(BmpOut); {$ENDIF}
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
 procedure TfrmResample.btnHBHardClick(Sender: TObject);
-CONST
-    AlgorithmName= '04c HB QuickDownScale';
+CONST AlgorithmName= '04c HB QuickDownScale';
 begin
   Trim24;
   BmpOut.Assign(Loader);
 
   TimerStart;
   {$IFDEF 3RDPARTY} GraphHBResize.HardDownscaleFac2(BmpOut); {$ENDIF}
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
 
 {-------------------------------------------------------------------------------------------------------------
    MadShi
-   FASTEST !!!!!
+   FAST!
+   Same timing, same quality. Madshi is a bit faster.
 
-   I think it is the same algorithm as SmoothResizeASM.SmoothResizeMMX. Same timing, same quality. Madshi is a bit faster
+   I think it is the same algorithm as SmoothResizeASM.
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actMadshiExecute(Sender: TObject);
-CONST
-    AlgorithmName= '05 madGraphics';
+CONST AlgorithmName= '05 madGraphics';
 begin
-  Trim32;
+  Trim24;
+
+  // Madshi is the only one that requires pf32
+  BmpOut.PixelFormat:= pf32bit;
+  Loader.PixelFormat:= pf32bit;
 
   TimerStart;
   GraphMadGraphics32.StretchBitmap32(Loader, BmpOut);
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
@@ -467,18 +439,15 @@ end;
    BEST (in scale down)
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actScaleImageExecute(Sender: TObject);
-CONST
-    AlgorithmName= '06 VCL.ScaleImage';
+CONST AlgorithmName= '06 VCL.ScaleImage';
 begin
   Trim24;
+
   TimerStart;
   cGraphResizeVCL.ScaleImage(Loader, BmpOut, Scale);
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
@@ -488,19 +457,15 @@ end;
    40 ms
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actDephiStrtchDrwExecute(Sender: TObject);
-CONST
-    AlgorithmName= '07 VCL.Stretch';
+CONST AlgorithmName= '07 VCL.Stretch';
 begin
   Trim24;
 
   TimerStart;
   cGraphResizeVCL.CanvasStretch(Loader, BmpOut);
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
@@ -510,19 +475,15 @@ end;
    76 ms
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actResizeMMXExecute(Sender: TObject);
-CONST
-   AlgorithmName= '08 SmoothResize ASM';
+CONST AlgorithmName= '08 SmoothResize ASM';
 begin
   Trim24;
-  VAR NewHeight:= RoundEx(spnWidth.Value / ratio);
+
   TimerStart;
   BmpOut:= GraphSmoothResizeASM.SmoothResizeMMX(Loader, spnWidth.Value, NewHeight);
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
@@ -532,86 +493,64 @@ end;
    88 ms
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actMsThumbnailsExecute(Sender: TObject);
-CONST
-    AlgorithmName= '09 Windows.Thumbnail';
+CONST AlgorithmName= '09 Windows.Thumbnail';
 begin
   Trim24;
 
+  TimerStart;
   VAR ThumbObj := cGraphResizeMsThumb.TFileThumb.Create;
   TRY
-    ThumbObj.Size     := spnWidth.Value;
+    ThumbObj.Width    := spnWidth.Value;
     ThumbObj.FilePath := Files.FileName;             // whenever you set a FilePath a new ThumbBmp is made
-
-    TimerStart;
     ThumbObj.GenerateThumbnail;
-    LogTime(AlgorithmName, TimerElapsed);
-
-
-    // Show output
-    ThumbObj.ThumbBmp.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-    Preview.Picture.Assign(ThumbObj.ThumbBmp);
-    Bip30;
+    BmpOut.Assign(ThumbObj.ThumbBmp);
   FINALLY
     FreeAndNil(ThumbObj);
   END;
+
+  TimerStop(AlgorithmName, TimerElapsed);
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
 {-------------------------------------------------------------------------------------------------------------
    BITBLT
    150 ms
--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
   Resize down: VERY smooth. Better than JanFX.SmoothResize.
   Resize up: better (sharper) than JanFX.SmoothResize
   Time: similar to JanFx }
 procedure TfrmResample.actBitBltExecute(Sender: TObject);
-CONST
-    AlgorithmName= '10 Windows.StretchBlt';
+CONST AlgorithmName= '10 Windows.StretchBlt';
 begin
   Trim24;
   BmpOut.Assign(Loader);
 
   TimerStart;
-  Stretch(BmpOut, spnWidth.Value, NewHeight);                 // Resize the screen if it is the preview
-  LogTime(AlgorithmName, TimerElapsed);
+  Stretch(BmpOut, spnWidth.Value, NewHeight);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Show output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
 
+{-------------------------------------------------------------------------------------------------------------
+   FMX
+   Absolutelly the slowest!
+-------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actFMXGraphicsExecute(Sender: TObject);
-CONST
-   AlgorithmName = '11 FMX.CreateThumbnail';
+CONST AlgorithmName = '11 FMX.CreateThumbnail';
 begin
   Trim24;
   BmpOut.Assign(Loader);
 
   TimerStart;
   ResizeFMX(BmpOut, spnWidth.Value, NewHeight);
-  LogTime(AlgorithmName, TimerElapsed);
+  TimerStop(AlgorithmName, TimerElapsed);
 
-  // Save and display the output
-  BmpOut.SaveToFile(OutputFileName(AlgorithmName, TimerElapsed));
-  Preview.Picture.Assign(BmpOut);
-  Bip30;
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
 end;
 
 
 end.
-
-
-procedure TfrmResample.Button1Click(Sender: TObject);
-VAR BMP1: TBitmap;
-begin
-  BMP1:= LoadGraph('c:\Projects\Projects GRAPH Resamplers\GLOBAL Tester\Medusa HiQ.jpg');
-  BMP1.PixelFormat:= pf24bit;
-
-  StretchGr32(BMP1, 0.03, 0.03);
-  Preview.Picture.Assign(BMP1);
-  BMP1.SaveToFile('c:\Projects\Projects GRAPH Resamplers\GLOBAL Tester\Medusa out.bmp');
-end;
-

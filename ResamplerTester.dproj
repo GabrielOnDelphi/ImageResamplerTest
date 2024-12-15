@@ -80,7 +80,7 @@
         <DCC_Alignment>2</DCC_Alignment>
         <UWP_DelphiLogo44>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_44.png</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>$(BDS)\bin\Artwork\Windows\UWP\delphi_UwpDefault_150.png</UWP_DelphiLogo150>
-        <DCC_UnitSearchPath>c:\Projects\LightSaber\;c:\Projects-3rd_Packages\Third party packages\;c:\Projects-3rd_Packages\Third party packages\JanFX\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>c:\Projects\LightSaber\;c:\Projects-3rd_Packages\Third party packages\;c:\Projects-3rd_Packages\Third party packages\JanFX\;c:\Projects-3rd_Packages\Third party packages\FastJpeg\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_Define>FastJpg;$(DCC_Define)</DCC_Define>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">

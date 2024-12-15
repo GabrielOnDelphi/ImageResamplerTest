@@ -348,6 +348,19 @@ object frmResample: TfrmResample
         OnClick = chkStretchClick
         AutoSize = True
       end
+      object chkSaveOutput: TCubicCheckBox
+        AlignWithMargins = True
+        Left = 3
+        Top = 366
+        Width = 194
+        Height = 15
+        Hint = 'Stretch the preview image'
+        Align = alBottom
+        Caption = 'Save output as BMP'
+        TabOrder = 18
+        OnClick = chkStretchClick
+        AutoSize = True
+      end
     end
   end
   object Panel7: TPanel
