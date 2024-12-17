@@ -88,6 +88,8 @@ type
     Preview                 : TImage;
     chkStretch              : TCubicCheckBox;
     chkSaveOutput           : TCubicCheckBox;
+    Button1: TButton;
+    actWic: TAction;
     procedure actBitBltExecute             (Sender: TObject);
     procedure actDephiStrtchDrwExecute     (Sender: TObject);
     procedure actFMXGraphicsExecute        (Sender: TObject);
@@ -105,19 +107,22 @@ type
     procedure btnHBHardClick               (Sender: TObject);
     procedure FilesDblClick                (Sender: TObject);
     procedure FormDestroy                  (Sender: TObject);
-    procedure LogDblClick                  (Sender: TObject);
     procedure SpinEdit1Change              (Sender: TObject);
     procedure chkStretchClick              (Sender: TObject);
+    procedure actWicExecute(Sender: TObject);
   private
     BmpOut: Vcl.Graphics.TBitmap;
     Loader: Vcl.Graphics.TBitmap;
     function Ratio: Double;
     procedure TimerStop(AlgorithmName: string; Time: Double);
-    procedure Trim24;
     function  NewHeight: Integer;
     function  Scale: Double;
     procedure LateInitialize(VAR Msg: TMessage); message MSG_LateFormInit;
-    procedure ShowOutput(FileName: string); // Called after the main form was fully initilized
+    procedure ShowOutput(FileName: string);
+    procedure LoadInput24;
+    procedure PrepareOutput24;
+    procedure LoadInput32;
+    procedure LoadInput; // Called after the main form was fully initilized
  end;
 
 VAR
@@ -135,7 +140,7 @@ USES
    {$IFDEF HBert}  GraphHBResize, {$ENDIF}
    {$IFDEF 3RDPARTY} janFXStretch, GraphSmoothResizeASM, GraphMadGraphics32, {$ENDIF}
    cmMath, cmSound, cmDebugger, ccColors,
-   cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeFMX, cGraphResizeWin, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeMsThumb;
+   cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeFMX, cGraphResizeWinWIC, cGraphResizeWinBlt, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeMsThumb;
 
 
 
@@ -179,11 +184,10 @@ end;
 
 procedure TfrmResample.btnOrigClick(Sender: TObject);
 begin
- FreeAndNil(Loader);
+ FreeAndNil(Loader);   //ToDo 1: disable all buttons if Loader = nil;
  if FileExistsMsg(Files.FileName) then
   begin
    Loader:= LoadGraph(Files.FileName);
-   Loader.PixelFormat:= pf24bit;
    Preview.Picture.Assign(Loader);
   end;
 end;
@@ -217,6 +221,7 @@ begin
 end;
 
 
+
 {-------------------------------------------------------------------------------------------------------------
    SIZES
 -------------------------------------------------------------------------------------------------------------}
@@ -238,42 +243,12 @@ begin
 end;
 
 
-function OutputFolder: string;
-begin
-  Result:= AppData.CurFolder+ 'Output\';
-  ForceDirectoriesMsg(Result);
-end;
+
 
 
 {-------------------------------------------------------------------------------------------------------------
-   PREPARE
+   Output
 -------------------------------------------------------------------------------------------------------------}
-procedure TfrmResample.LogDblClick(Sender: TObject);
-begin
-  //Log.Lines.SaveToFile(OutputFolder+ 'Log.txt');
-  Bip30;
-end;
-
-
-procedure TfrmResample.Trim24;
-begin
-  Caption:= '';
-  Preview.Picture := NIL;
-  ClearBitmap(BmpOut);
-
-  // Most algorithms require pf24
-  BmpOut.PixelFormat:= pf24bit;
-  Loader.PixelFormat:= pf24bit;
-
-  {$IFDEF HardID}
-  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
-  {$ENDIF}
-
-  //VAR NewHeight:= RoundEx(spnWidth.Value / Ratio);
-  BmpOut.SetSize(spnWidth.Value, NewHeight);
-end;
-
-
 procedure TfrmResample.TimerStop(AlgorithmName: string; Time: Double);
 begin
   VAR s:= IntToStr(Round(Time))+ 'ms';
@@ -285,11 +260,18 @@ begin
 end;
 
 
+
+function OutputFolder: string;
+begin
+  Result:= AppData.CurFolder+ 'Output\';
+  ForceDirectoriesMsg(Result);
+end;
+
+
 function OutputFileName(CONST AlgorithmName: string; Time: Double): string;
 begin
   Result:= OutputFolder+ AlgorithmName+ ' ('+ IntToStr(Round(Time)) +'ms).bmp'
 end;
-
 
 
 procedure TfrmResample.ShowOutput(FileName: string);
@@ -299,6 +281,77 @@ begin
   Preview.Picture.Assign(BmpOut);
   Bip30;
 end;
+
+
+
+{-------------------------------------------------------------------------------------------------------------
+   PREPARE INP/OUT
+-------------------------------------------------------------------------------------------------------------}
+procedure TfrmResample.LoadInput32;
+begin
+  Caption:= '';
+  Preview.Picture := NIL;
+
+  // Unfortunatelly we have to reload the image as pf32
+  FreeAndNil(Loader);                               //ToDo 1: disable all buttons if Loader = nil;
+  if FileExistsMsg(Files.FileName)
+  then Loader:= LoadGraph(Files.FileName);
+  Loader.PixelFormat:= pf32bit;
+
+  ClearBitmap(BmpOut);
+  BmpOut.PixelFormat:= pf32bit;
+  BmpOut.SetSize(spnWidth.Value, NewHeight);
+
+  {$IFDEF HardID}
+  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
+  {$ENDIF}
+end;
+
+
+procedure TfrmResample.LoadInput;
+begin
+  Caption:= '';
+  Preview.Picture := NIL;
+  BmpOut.Assign(Loader);
+
+  {$IFDEF HardID}
+  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
+  {$ENDIF}
+end;
+
+
+procedure TfrmResample.LoadInput24;
+begin
+  Caption:= '';
+  Preview.Picture := NIL;
+  BmpOut.Assign(Loader);
+  BmpOut.PixelFormat := pf24bit;
+
+  {$IFDEF HardID}
+  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
+  {$ENDIF}
+end;
+
+
+procedure TfrmResample.PrepareOutput24;
+begin
+  Caption:= '';
+  Preview.Picture := NIL;
+  ClearBitmap(BmpOut);
+  BmpOut.PixelFormat := pf24bit;
+  BmpOut.SetSize(spnWidth.Value, NewHeight);
+
+  {$IFDEF HardID}
+  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
+  {$ENDIF}
+end;
+
+
+
+
+
+
+
 
 
 
@@ -312,8 +365,7 @@ procedure TfrmResample.actJanFXSmoothResExecute(Sender: TObject);
 CONST
     AlgorithmName= '01 JanFX SmoothResize';
 begin
-  Trim24;
-  cGraphBitmap.FillBitmap(BmpOut, clYellowGreen);
+  PrepareOutput24;
 
   TimerStart;
   SmoothResize(Loader, BmpOut);        //  BmpOut.PixelFormat:= pf24bit;
@@ -330,7 +382,7 @@ end;
 procedure TfrmResample.actJanFxStretchExecute(Sender: TObject);
 VAR AlgorithmName: string;
 begin
-  Trim24;
+  PrepareOutput24;
   AlgorithmName:= '02 JanFX Stretch-'+ i2s(SpinEdit1.Value);
 
   TimerStart;
@@ -347,8 +399,7 @@ end;
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actGr32Execute(Sender: TObject);
 begin
-  Trim24;
-  BmpOut.Assign(Loader);
+  LoadInput24;
 
   TimerStart;
   cGraphResizeGr32.StretchGr32(BmpOut, Scale, Scale, spnGr32Filter.Value, MitchellKernel);
@@ -367,7 +418,8 @@ end;
 procedure TfrmResample.actHBResizeExecute(Sender: TObject);
 CONST AlgorithmName= '04 HB';
 begin
-  Trim24;
+  Loader.PixelFormat:= pf24bit;
+  PrepareOutput24;
 
   TimerStart;
   {$IFDEF 3RDPARTY}
@@ -381,8 +433,7 @@ end;
 procedure TfrmResample.btnHBQckDwnClick(Sender: TObject);
 CONST AlgorithmName= '04a HB HardDownscale';
 begin
-  Trim24;
-  BmpOut.Assign(Loader);
+  LoadInput24;
 
   TimerStart;
   {$IFDEF 3RDPARTY} GraphHBResize.QuickDownscaleFac2(BmpOut); {$ENDIF}
@@ -395,8 +446,7 @@ end;
 procedure TfrmResample.btnHBHardClick(Sender: TObject);
 CONST AlgorithmName= '04c HB QuickDownScale';
 begin
-  Trim24;
-  BmpOut.Assign(Loader);
+  LoadInput24;
 
   TimerStart;
   {$IFDEF 3RDPARTY} GraphHBResize.HardDownscaleFac2(BmpOut); {$ENDIF}
@@ -410,18 +460,19 @@ end;
 {-------------------------------------------------------------------------------------------------------------
    MadShi
    FAST!
-   Same timing, same quality. Madshi is a bit faster.
+   Same timing, same quality.
 
    I think it is the same algorithm as SmoothResizeASM.
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actMadshiExecute(Sender: TObject);
 CONST AlgorithmName= '05 madGraphics';
 begin
-  Trim24;
+  Caption:= '';
+  Preview.Picture := NIL;
 
-  // Madshi is the only one that requires pf32
-  BmpOut.PixelFormat:= pf32bit;
-  Loader.PixelFormat:= pf32bit;
+  LoadInput32;                                 // Madshi is the only one that requires pf32
+  BmpOut.Assign(Loader);                       // Strange. MadShi requires the output image to be present in BmpOut
+  BmpOut.SetSize(spnWidth.Value, NewHeight);
 
   TimerStart;
   GraphMadGraphics32.StretchBitmap32(Loader, BmpOut);
@@ -441,7 +492,7 @@ end;
 procedure TfrmResample.actScaleImageExecute(Sender: TObject);
 CONST AlgorithmName= '06 VCL.ScaleImage';
 begin
-  Trim24;
+  PrepareOutput24;
 
   TimerStart;
   cGraphResizeVCL.ScaleImage(Loader, BmpOut, Scale);
@@ -455,11 +506,12 @@ end;
 {-------------------------------------------------------------------------------------------------------------
    DELPHI STRETCHDRAW
    40 ms
+   The worst image quality when scaling up.
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actDephiStrtchDrwExecute(Sender: TObject);
 CONST AlgorithmName= '07 VCL.Stretch';
 begin
-  Trim24;
+  PrepareOutput24;
 
   TimerStart;
   cGraphResizeVCL.CanvasStretch(Loader, BmpOut);
@@ -477,7 +529,7 @@ end;
 procedure TfrmResample.actResizeMMXExecute(Sender: TObject);
 CONST AlgorithmName= '08 SmoothResize ASM';
 begin
-  Trim24;
+  PrepareOutput24;
 
   TimerStart;
   BmpOut:= GraphSmoothResizeASM.SmoothResizeMMX(Loader, spnWidth.Value, NewHeight);
@@ -495,7 +547,7 @@ end;
 procedure TfrmResample.actMsThumbnailsExecute(Sender: TObject);
 CONST AlgorithmName= '09 Windows.Thumbnail';
 begin
-  Trim24;
+  PrepareOutput24;
 
   TimerStart;
   VAR ThumbObj := cGraphResizeMsThumb.TFileThumb.Create;
@@ -523,8 +575,7 @@ end;
 procedure TfrmResample.actBitBltExecute(Sender: TObject);
 CONST AlgorithmName= '10 Windows.StretchBlt';
 begin
-  Trim24;
-  BmpOut.Assign(Loader);
+  LoadInput24;
 
   TimerStart;
   Stretch(BmpOut, spnWidth.Value, NewHeight);
@@ -542,11 +593,29 @@ end;
 procedure TfrmResample.actFMXGraphicsExecute(Sender: TObject);
 CONST AlgorithmName = '11 FMX.CreateThumbnail';
 begin
-  Trim24;
+  LoadInput32;
   BmpOut.Assign(Loader);
 
   TimerStart;
   ResizeFMX(BmpOut, spnWidth.Value, NewHeight);
+  TimerStop(AlgorithmName, TimerElapsed);
+
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
+end;
+
+
+
+{-------------------------------------------------------------------------------------------------------------
+   WIC
+-------------------------------------------------------------------------------------------------------------}
+procedure TfrmResample.actWicExecute(Sender: TObject);
+CONST AlgorithmName= '12 Windows.WIC';
+begin
+  LoadInput32;                                 // Madshi is the only one that requires pf32
+  BmpOut.Assign(Loader);                       // Strange. MadShi requires the output image to be present in BmpOut
+
+  TimerStart;
+  cGraphResizeWinWIC.ResizeBitmapWic(BmpOut, spnWidth.Value, NewHeight);  // pf32
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));

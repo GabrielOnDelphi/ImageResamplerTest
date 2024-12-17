@@ -2,7 +2,7 @@ object frmResample: TfrmResample
   Left = 1040
   Top = 171
   Caption = 'Resamplers test'
-  ClientHeight = 674
+  ClientHeight = 739
   ClientWidth = 946
   Color = 16579836
   DoubleBuffered = True
@@ -21,7 +21,7 @@ object frmResample: TfrmResample
     Left = 3
     Top = 3
     Width = 206
-    Height = 668
+    Height = 733
     Align = alLeft
     BevelOuter = bvNone
     ParentColor = True
@@ -125,7 +125,7 @@ object frmResample: TfrmResample
       Left = 3
       Top = 239
       Width = 200
-      Height = 426
+      Height = 491
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -133,7 +133,7 @@ object frmResample: TfrmResample
       object btnJanStretch: TButton
         Left = 8
         Top = 80
-        Width = 87
+        Width = 92
         Height = 34
         Action = actJanFxStretch
         TabOrder = 1
@@ -142,15 +142,14 @@ object frmResample: TfrmResample
       object btnGr32: TButton
         Left = 8
         Top = 117
-        Width = 87
+        Width = 92
         Height = 34
         Action = actGr32
-        Caption = 'GR32'#13#10
         TabOrder = 2
         WordWrap = True
       end
       object SpinEdit1: TSpinEdit
-        Left = 105
+        Left = 107
         Top = 55
         Width = 44
         Height = 22
@@ -175,16 +174,16 @@ object frmResample: TfrmResample
       object btnJanSmooth: TButton
         Left = 8
         Top = 43
-        Width = 87
+        Width = 92
         Height = 34
         Action = actJanFXSmoothRes
         TabOrder = 0
         WordWrap = True
       end
       object btnHB: TButton
-        Left = 62
-        Top = 278
-        Width = 87
+        Left = 55
+        Top = 328
+        Width = 92
         Height = 34
         Action = actHBResize
         TabOrder = 3
@@ -192,69 +191,64 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object btnMadshi: TButton
-        Left = 101
-        Top = 117
-        Width = 87
+        Left = 106
+        Top = 114
+        Width = 92
         Height = 34
         Action = actMadshi
-        Caption = 'Madshi madGraphics'
         TabOrder = 4
         WordWrap = True
       end
       object btnDephiStrtchDrw: TButton
         Left = 8
         Top = 154
-        Width = 87
+        Width = 92
         Height = 34
         Action = actDephiStrtchDrw
-        Caption = 'Canvas StretchDraw'
         TabOrder = 6
         WordWrap = True
       end
       object btnResizeMMX: TButton
-        Left = 101
-        Top = 154
-        Width = 87
+        Left = 103
+        Top = 191
+        Width = 92
         Height = 34
         Action = actResizeMMX
-        Caption = 'SmoothResize ASM'
         TabOrder = 7
         WordWrap = True
       end
       object btnMsThumbnails: TButton
-        Left = 101
+        Left = 103
         Top = 229
-        Width = 87
+        Width = 92
         Height = 34
         Action = actMsThumbnails
-        Caption = 'Windows Thumbnails'
         TabOrder = 9
         WordWrap = True
       end
       object btnBitBlt: TButton
         Left = 8
         Top = 229
-        Width = 87
+        Width = 92
         Height = 34
         Action = actBitBlt
-        Caption = 'Windows StretchBlt'
         TabOrder = 8
         WordWrap = True
       end
       object btnDelphiScaleImg: TButton
-        Left = 101
-        Top = 191
-        Width = 87
+        Left = 103
+        Top = 154
+        Width = 92
         Height = 34
         Action = actScaleImage
-        Caption = 'VCL ScaleImage'
+        Caption = '6. VCL ScaleImage'
         TabOrder = 5
         WordWrap = True
       end
       object Button2: TButton
         Left = 8
         Top = 191
-        Width = 87
+        Width = 92
         Height = 34
         Action = actFMXGraphics
         TabOrder = 10
@@ -263,7 +257,7 @@ object frmResample: TfrmResample
       object chkTrimRam: TCubicCheckBox
         AlignWithMargins = True
         Left = 3
-        Top = 408
+        Top = 473
         Width = 194
         Height = 15
         Hint = 
@@ -278,9 +272,9 @@ object frmResample: TfrmResample
         AutoSize = True
       end
       object btnHBQckDwn: TButton
-        Left = 8
-        Top = 318
-        Width = 87
+        Left = 6
+        Top = 368
+        Width = 92
         Height = 34
         Hint = 'QuickDownscaleFac2'
         Caption = 'HB QuickDown'
@@ -290,9 +284,9 @@ object frmResample: TfrmResample
         OnClick = btnHBQckDwnClick
       end
       object btnHBHard: TButton
-        Left = 101
-        Top = 318
-        Width = 87
+        Left = 103
+        Top = 368
+        Width = 92
         Height = 34
         Hint = 'HardDownscaleFac2'
         Caption = 'HB HardDown'
@@ -336,7 +330,7 @@ object frmResample: TfrmResample
       object chkStretch: TCubicCheckBox
         AlignWithMargins = True
         Left = 3
-        Top = 387
+        Top = 452
         Width = 194
         Height = 15
         Hint = 'Stretch the preview image'
@@ -351,7 +345,7 @@ object frmResample: TfrmResample
       object chkSaveOutput: TCubicCheckBox
         AlignWithMargins = True
         Left = 3
-        Top = 366
+        Top = 431
         Width = 194
         Height = 15
         Hint = 'Stretch the preview image'
@@ -361,13 +355,22 @@ object frmResample: TfrmResample
         OnClick = chkStretchClick
         AutoSize = True
       end
+      object Button1: TButton
+        Left = 55
+        Top = 269
+        Width = 92
+        Height = 34
+        Action = actWic
+        TabOrder = 19
+        WordWrap = True
+      end
     end
   end
   object Panel7: TPanel
     Left = 212
     Top = 0
     Width = 734
-    Height = 674
+    Height = 739
     Align = alClient
     Caption = 'Panel7'
     TabOrder = 1
@@ -376,7 +379,7 @@ object frmResample: TfrmResample
       Left = 4
       Top = 4
       Width = 726
-      Height = 666
+      Height = 731
       Align = alClient
       BevelOuter = bvNone
       Color = 3350025
@@ -386,7 +389,7 @@ object frmResample: TfrmResample
         Left = 0
         Top = 0
         Width = 726
-        Height = 666
+        Height = 731
         Align = alClient
         Center = True
         Proportional = True
@@ -395,61 +398,65 @@ object frmResample: TfrmResample
     end
   end
   object ActionList: TActionList
-    Left = 198
-    Top = 40
+    Left = 358
+    Top = 48
     object actJanFXSmoothRes: TAction
-      Caption = 'JanFX SmoothResize'
+      Caption = '01. JanFX SmoothResize'
       ShortCut = 16433
       OnExecute = actJanFXSmoothResExecute
     end
     object actJanFxStretch: TAction
-      Caption = 'JanFx'#13#10'Stretch'
+      Caption = '02. JanFx Stretch'
       ShortCut = 16434
       OnExecute = actJanFxStretchExecute
     end
     object actGr32: TAction
-      Caption = 'GR32'#13#10'StretchImage'
+      Caption = '03. GR32 StretchGr32'
       ShortCut = 16435
       OnExecute = actGr32Execute
     end
     object actHBResize: TAction
-      Caption = 'HB'
+      Caption = '06. HB'
       ShortCut = 16436
       OnExecute = actHBResizeExecute
     end
     object actMadshi: TAction
-      Caption = 'Madshi'
+      Caption = '05. madShi'
       ShortCut = 16437
       OnExecute = actMadshiExecute
     end
     object actScaleImage: TAction
-      Caption = 'Delphi ScaleImage'
+      Caption = '6 VCL ScaleImage'
       ShortCut = 16438
       OnExecute = actScaleImageExecute
     end
     object actDephiStrtchDrw: TAction
-      Caption = 'Dephi StrtchDrw'
+      Caption = '7. VCL StretchDraw'
       ShortCut = 16439
       OnExecute = actDephiStrtchDrwExecute
     end
     object actResizeMMX: TAction
-      Caption = 'Resize MMX'
+      Caption = '08. SmoothResize ASM'
       ShortCut = 16440
       OnExecute = actResizeMMXExecute
     end
     object actMsThumbnails: TAction
-      Caption = 'Microsoft Thumbnails'
+      Caption = '09. Windows Thumbnails'
       ShortCut = 16432
       OnExecute = actMsThumbnailsExecute
     end
     object actBitBlt: TAction
-      Caption = 'BitBlt'
+      Caption = '10. Windows StretchBlt'
       ShortCut = 16441
       OnExecute = actBitBltExecute
     end
     object actFMXGraphics: TAction
-      Caption = 'FMX.Graphics'
+      Caption = '11. FMX.Graphics'
       OnExecute = actFMXGraphicsExecute
+    end
+    object actWic: TAction
+      Caption = '12. Windows WIC'
+      OnExecute = actWicExecute
     end
   end
 end
