@@ -17,14 +17,14 @@ This tool tests 13 resizing algorithms (available as Delphi code).
    12 Windows.WIC (Windows API)
    13 Windows.GDI (Windows API)
    
-Tests: 
+Tests:   
    * Resample up  
    * Resample down     
    
 Two of the above tests include 3rd party algorithms.  
 If you don't have access to their source code, you will have to switch off the {$3RDPARTY} switch.     
     
-**Test program** 
+**Test program**   
 Precompiled EXE file and test images (high res/low res) available:
 ![Screenshot](/About/screenshot.png)     
 
@@ -34,8 +34,8 @@ Precompiled EXE file and test images (high res/low res) available:
    Quality: Most algorithms are suitable to scale down a high-res image. This is not true for scaling up. Some algorithms are much better than others.
    Speed: Here things are much different. Some algorithms could be 10x faster than others, while still producing similar quality.   
    
-   The winner is Windows.StretchBlt.  
-   In all tests, the Embarcadero algorithms came out the worst.
+   The *winner* is Windows.StretchBlt.  
+   In all tests, the Embarcadero algorithms came out the worst (as speed and time).
    
 **Future**    
    Star this project if you want to see more algorithms added to the comparison. 
