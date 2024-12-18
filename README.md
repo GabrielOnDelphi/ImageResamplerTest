@@ -1,6 +1,8 @@
 # ImageResamplerTest
  
-This tool tests 13 resizing algorithms (available as Delphi code).  
+This tool tests 13 resizing algorithms (available as Delphi code). 
+
+![Screenshot](/About/screenshot.png)   
     
 **Tested algorithms**  
    01 JanFX SmoothResize
@@ -25,17 +27,12 @@ Two of the above tests include 3rd party algorithms.
 If you don't have access to their source code, you will have to switch off the {$3RDPARTY} switch.     
     
 **Test program**   
-Precompiled EXE file and test images (high res/low res) available:
-![Screenshot](/About/screenshot.png)     
+Precompiled EXE file and test images (high res/low res) available.   
 
  ------------------------------------------------------------------------------------------------------------
 
 **Conclusions**   
-   Quality: Most algorithms are suitable to scale down a high-res image. This is not true for scaling up. Some algorithms are much better than others.
-   Speed: Here things are much different. Some algorithms could be 10x faster than others, while still producing similar quality.   
-   
-   The *winner* is Windows.StretchBlt.  
-   In all tests, the Embarcadero algorithms came out the worst (as speed and time).
+   This article discusses the [conclusions](https://gabrielmoraru.com/say-no-to-crappy-images-in-your-delphi-programs-finding-the-best-resizing-algorithm/) of the test and shows the resulted images.
    
 **Future**    
    Star this project if you want to see more algorithms added to the comparison. 

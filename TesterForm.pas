@@ -38,7 +38,8 @@ USES
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
   Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  cvIniFile, ccCore, ccINIFile, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, cbAppdata;
+  cvIniFile, ccCore, ccINIFile, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, cbAppdata,
+  Vcl.Imaging.pngimage;
 
 type
   TfrmResample = class(TForm)
@@ -72,7 +73,7 @@ type
     Panel2                  : TPanel;
     Panel3                  : TPanel;
     Path                    : TCubicPathEdit;
-    SpinEdit1               : TSpinEdit;
+    spnJan: TSpinEdit;
     spnGr32Filter           : TSpinEdit;
     btnHBQckDwn             : TButton;
     btnHBHard               : TButton;
@@ -109,7 +110,7 @@ type
     procedure btnHBHardClick               (Sender: TObject);
     procedure FilesDblClick                (Sender: TObject);
     procedure FormDestroy                  (Sender: TObject);
-    procedure SpinEdit1Change              (Sender: TObject);
+    procedure spnJanChange              (Sender: TObject);
     procedure chkStretchClick              (Sender: TObject);
     procedure actWicExecute(Sender: TObject);
     procedure actGDIExecute(Sender: TObject);
@@ -125,7 +126,6 @@ type
     procedure LoadInput24;
     procedure PrepareOutput24;
     procedure LoadInput32;
-    procedure LoadInput; //UNUSED   // Called after the main form was fully initilized
  end;
 
 VAR
@@ -166,7 +166,7 @@ begin
  Show;
 
  btnOrigClick(Self);
- actMsThumbnailsExecute(Self);
+ //actMsThumbnailsExecute(Self);
 end;
 
 
@@ -192,6 +192,7 @@ begin
   begin
    Loader:= LoadGraph(Files.FileName);
    Preview.Picture.Assign(Loader);
+   Preview.Stretch := chkStretch.Checked;
   end;
 end;
 
@@ -212,9 +213,9 @@ begin
 end;
 
 
-procedure TfrmResample.SpinEdit1Change(Sender: TObject);
+procedure TfrmResample.spnJanChange(Sender: TObject);
 begin
-  Caption:= ResampleFilters[SpinEdit1.Value].Name;
+  Caption:= ResampleFilters[spnJan.Value].Name;
 end;
 
 
@@ -279,9 +280,9 @@ end;
 
 procedure TfrmResample.ShowOutput(FileName: string);
 begin
+  Preview.Picture.Bitmap.Assign(BmpOut);  // If we do Preview.Picture.Assign(BmpOut) directly, then the TImage.Stretch won't work!
   if chkSaveOutput.Checked
   then BmpOut.SaveToFile(FileName);
-  Preview.Picture.Assign(BmpOut);
   Bip30;
 end;
 
@@ -304,18 +305,6 @@ begin
   ClearBitmap(BmpOut);
   BmpOut.PixelFormat:= pf32bit;
   BmpOut.SetSize(spnWidth.Value, NewHeight);
-
-  {$IFDEF HardID}
-  if chkTrimRam.Checked then chHardID.TrimWorkingSet;
-  {$ENDIF}
-end;
-
-
-procedure TfrmResample.LoadInput;
-begin
-  Caption:= '';
-  Preview.Picture := NIL;
-  BmpOut.Assign(Loader);
 
   {$IFDEF HardID}
   if chkTrimRam.Checked then chHardID.TrimWorkingSet;
@@ -387,10 +376,10 @@ procedure TfrmResample.actJanFxStretchExecute(Sender: TObject);
 VAR AlgorithmName: string;
 begin
   PrepareOutput24;
-  AlgorithmName:= '02 JanFX Stretch-'+ i2s(SpinEdit1.Value);
+  AlgorithmName:= '02 JanFX Stretch-'+ i2s(spnJan.Value);
 
   TimerStart;
-  janFxStretch.Stretch_(Loader, BmpOut, ResampleFilters[SpinEdit1.Value].Filter, ResampleFilters[SpinEdit1.Value].Width);
+  janFxStretch.Stretch_(Loader, BmpOut, ResampleFilters[spnJan.Value].Filter, ResampleFilters[spnJan.Value].Width);
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
