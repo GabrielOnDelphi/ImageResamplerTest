@@ -149,8 +149,8 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object SpinEdit1: TSpinEdit
-        Left = 107
-        Top = 55
+        Left = 111
+        Top = 54
         Width = 44
         Height = 22
         Hint = 'Filter type'
@@ -161,8 +161,8 @@ object frmResample: TfrmResample
         OnChange = SpinEdit1Change
       end
       object spnGr32Filter: TSpinEdit
-        Left = 107
-        Top = 86
+        Left = 111
+        Top = 85
         Width = 44
         Height = 22
         Hint = 'Filter type'
@@ -172,8 +172,8 @@ object frmResample: TfrmResample
         Value = 0
       end
       object btnJanSmooth: TButton
-        Left = 8
-        Top = 43
+        Left = 13
+        Top = 40
         Width = 92
         Height = 34
         Action = actJanFXSmoothRes
@@ -192,7 +192,7 @@ object frmResample: TfrmResample
       end
       object btnMadshi: TButton
         Left = 106
-        Top = 114
+        Top = 117
         Width = 92
         Height = 34
         Action = actMadshi
@@ -200,7 +200,7 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object btnDephiStrtchDrw: TButton
-        Left = 8
+        Left = 106
         Top = 154
         Width = 92
         Height = 34
@@ -209,7 +209,7 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object btnResizeMMX: TButton
-        Left = 103
+        Left = 8
         Top = 191
         Width = 92
         Height = 34
@@ -218,8 +218,8 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object btnMsThumbnails: TButton
-        Left = 103
-        Top = 229
+        Left = 106
+        Top = 191
         Width = 92
         Height = 34
         Action = actMsThumbnails
@@ -228,7 +228,7 @@ object frmResample: TfrmResample
       end
       object btnBitBlt: TButton
         Left = 8
-        Top = 229
+        Top = 228
         Width = 92
         Height = 34
         Action = actBitBlt
@@ -236,7 +236,7 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object btnDelphiScaleImg: TButton
-        Left = 103
+        Left = 8
         Top = 154
         Width = 92
         Height = 34
@@ -246,8 +246,8 @@ object frmResample: TfrmResample
         WordWrap = True
       end
       object Button2: TButton
-        Left = 8
-        Top = 191
+        Left = 106
+        Top = 228
         Width = 92
         Height = 34
         Action = actFMXGraphics
@@ -356,12 +356,21 @@ object frmResample: TfrmResample
         AutoSize = True
       end
       object Button1: TButton
-        Left = 55
-        Top = 269
+        Left = 8
+        Top = 265
         Width = 92
         Height = 34
         Action = actWic
         TabOrder = 19
+        WordWrap = True
+      end
+      object Button3: TButton
+        Left = 106
+        Top = 265
+        Width = 92
+        Height = 34
+        Action = actGDI
+        TabOrder = 20
         WordWrap = True
       end
     end
@@ -457,6 +466,10 @@ object frmResample: TfrmResample
     object actWic: TAction
       Caption = '12. Windows WIC'
       OnExecute = actWicExecute
+    end
+    object actGDI: TAction
+      Caption = '13. Windows GDI'
+      OnExecute = actGDIExecute
     end
   end
 end

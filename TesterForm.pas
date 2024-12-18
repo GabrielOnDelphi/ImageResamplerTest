@@ -90,6 +90,8 @@ type
     chkSaveOutput           : TCubicCheckBox;
     Button1: TButton;
     actWic: TAction;
+    Button3: TButton;
+    actGDI: TAction;
     procedure actBitBltExecute             (Sender: TObject);
     procedure actDephiStrtchDrwExecute     (Sender: TObject);
     procedure actFMXGraphicsExecute        (Sender: TObject);
@@ -110,6 +112,7 @@ type
     procedure SpinEdit1Change              (Sender: TObject);
     procedure chkStretchClick              (Sender: TObject);
     procedure actWicExecute(Sender: TObject);
+    procedure actGDIExecute(Sender: TObject);
   private
     BmpOut: Vcl.Graphics.TBitmap;
     Loader: Vcl.Graphics.TBitmap;
@@ -122,7 +125,7 @@ type
     procedure LoadInput24;
     procedure PrepareOutput24;
     procedure LoadInput32;
-    procedure LoadInput; // Called after the main form was fully initilized
+    procedure LoadInput; //UNUSED   // Called after the main form was fully initilized
  end;
 
 VAR
@@ -140,7 +143,7 @@ USES
    {$IFDEF HBert}  GraphHBResize, {$ENDIF}
    {$IFDEF 3RDPARTY} janFXStretch, GraphSmoothResizeASM, GraphMadGraphics32, {$ENDIF}
    cmMath, cmSound, cmDebugger, ccColors,
-   cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeFMX, cGraphResizeWinWIC, cGraphResizeWinBlt, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeMsThumb;
+   cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeWinGDI, cGraphResizeFMX, cGraphResizeWinWIC, cGraphResizeWinBlt, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeWinThumb;
 
 
 
@@ -378,6 +381,7 @@ end;
 {-------------------------------------------------------------------------------------------------------------
    2. JAN FX - Stretch
    745 ms
+   Resize down: very good but terribly slow (use BLT instead)
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actJanFxStretchExecute(Sender: TObject);
 VAR AlgorithmName: string;
@@ -525,6 +529,7 @@ end;
 {-------------------------------------------------------------------------------------------------------------
    MMX
    76 ms
+   Very good to resize up but not down.
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actResizeMMXExecute(Sender: TObject);
 CONST AlgorithmName= '08 SmoothResize ASM';
@@ -543,6 +548,10 @@ end;
 {-------------------------------------------------------------------------------------------------------------
    Microsoft Thumb
    88 ms
+
+   Resize down:
+     Too smooth, distorts the image, However, it improves the colors.
+     Fastest ever!
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actMsThumbnailsExecute(Sender: TObject);
 CONST AlgorithmName= '09 Windows.Thumbnail';
@@ -550,7 +559,7 @@ begin
   PrepareOutput24;
 
   TimerStart;
-  VAR ThumbObj := cGraphResizeMsThumb.TFileThumb.Create;
+  VAR ThumbObj:= cGraphResizeWinThumb.TFileThumb.Create;
   TRY
     ThumbObj.Width    := spnWidth.Value;
     ThumbObj.FilePath := Files.FileName;             // whenever you set a FilePath a new ThumbBmp is made
@@ -607,6 +616,7 @@ end;
 
 {-------------------------------------------------------------------------------------------------------------
    WIC
+   Resize down: too smooth, too slow
 -------------------------------------------------------------------------------------------------------------}
 procedure TfrmResample.actWicExecute(Sender: TObject);
 CONST AlgorithmName= '12 Windows.WIC';
@@ -616,6 +626,20 @@ begin
 
   TimerStart;
   cGraphResizeWinWIC.ResizeBitmapWic(BmpOut, spnWidth.Value, NewHeight);  // pf32
+  TimerStop(AlgorithmName, TimerElapsed);
+
+  ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
+end;
+
+
+procedure TfrmResample.actGDIExecute(Sender: TObject);
+CONST AlgorithmName= '13 Windows.GDI';
+begin
+  LoadInput24;
+  //BmpOut.Assign(Loader);
+
+  TimerStart;
+  cGraphResizeWinGDI.ResizeBitmapGDI(Loader, BmpOut, spnWidth.Value, NewHeight);
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
