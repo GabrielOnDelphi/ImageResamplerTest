@@ -38,11 +38,11 @@ USES
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
   Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  cvIniFile, ccCore, ccINIFile, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, cbAppdata,
+  cvIniFile, ccCore, ccINIFile, cbAppDataForm, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, cbAppdata,
   Vcl.Imaging.pngimage;
 
 type
-  TfrmResample = class(TForm)
+  TfrmResample = class(TLightForm)
     actBitBlt               : TAction;
     actDephiStrtchDrw       : TAction;
     actFMXGraphics          : TAction;
@@ -121,7 +121,7 @@ type
     procedure TimerStop(AlgorithmName: string; Time: Double);
     function  NewHeight: Integer;
     function  Scale: Double;
-    procedure LateInitialize(VAR Msg: TMessage); message MSG_LateFormInit;
+    procedure LateInitialize; override;
     procedure ShowOutput(FileName: string);
     procedure LoadInput24;
     procedure PrepareOutput24;
@@ -150,6 +150,8 @@ USES
 
 procedure TfrmResample.LateInitialize;
 begin
+ inherited LateInitialize;
+
  btnHB.Visible      := AppData.RunningHome;
  btnHBQckDwn.Visible:= AppData.RunningHome;
  btnHBHard.Visible  := AppData.RunningHome;
