@@ -73,7 +73,7 @@ type
     Panel2                  : TPanel;
     Panel3                  : TPanel;
     Path                    : TCubicPathEdit;
-    spnJan: TSpinEdit;
+    spnJan                  : TSpinEdit;
     spnGr32Filter           : TSpinEdit;
     btnHBQckDwn             : TButton;
     btnHBHard               : TButton;
@@ -89,10 +89,10 @@ type
     Preview                 : TImage;
     chkStretch              : TCubicCheckBox;
     chkSaveOutput           : TCubicCheckBox;
-    Button1: TButton;
-    actWic: TAction;
-    Button3: TButton;
-    actGDI: TAction;
+    Button1                 : TButton;
+    actWic                  : TAction;
+    Button3                 : TButton;
+    actGDI                  : TAction;
     procedure actBitBltExecute             (Sender: TObject);
     procedure actDephiStrtchDrwExecute     (Sender: TObject);
     procedure actFMXGraphicsExecute        (Sender: TObject);
@@ -110,10 +110,10 @@ type
     procedure btnHBHardClick               (Sender: TObject);
     procedure FilesDblClick                (Sender: TObject);
     procedure FormDestroy                  (Sender: TObject);
-    procedure spnJanChange              (Sender: TObject);
+    procedure spnJanChange                 (Sender: TObject);
     procedure chkStretchClick              (Sender: TObject);
-    procedure actWicExecute(Sender: TObject);
-    procedure actGDIExecute(Sender: TObject);
+    procedure actWicExecute                (Sender: TObject);
+    procedure actGDIExecute                (Sender: TObject);
   private
     BmpOut: Vcl.Graphics.TBitmap;
     Loader: Vcl.Graphics.TBitmap;
@@ -121,11 +121,12 @@ type
     procedure TimerStop(AlgorithmName: string; Time: Double);
     function  NewHeight: Integer;
     function  Scale: Double;
-    procedure LateInitialize; override;
     procedure ShowOutput(FileName: string);
     procedure LoadInput24;
     procedure PrepareOutput24;
     procedure LoadInput32;
+  public
+    procedure LateInitialize; override;
  end;
 
 VAR
