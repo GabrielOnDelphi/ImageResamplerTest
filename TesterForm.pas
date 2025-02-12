@@ -37,7 +37,7 @@ USES
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
-  Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, cbAppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
   cvIniFile, ccCore, ccINIFile, cbAppDataForm, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, cbAppdata,
   Vcl.Imaging.pngimage;
 
@@ -126,7 +126,7 @@ type
     procedure PrepareOutput24;
     procedure LoadInput32;
   public
-    procedure LateInitialize; override;
+    procedure FormInitialize; {don't forget inherited LateInitialize!} override;
  end;
 
 VAR
@@ -149,9 +149,9 @@ USES
 
 
 
-procedure TfrmResample.LateInitialize;
+procedure TfrmResample.FormInitialize;
 begin
- inherited LateInitialize;
+ inherited FormInitialize;
 
  btnHB.Visible      := AppData.RunningHome;
  btnHBQckDwn.Visible:= AppData.RunningHome;
