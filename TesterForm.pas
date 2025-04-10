@@ -39,7 +39,8 @@ USES
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
   Vcl.Controls, Vcl.Forms, cbAppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  cvIniFile, ccCore, ccINIFile, cbAppDataForm, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, cbAppdata,
+  cvIniFile, ccCore, ccINIFile, cbAppDataForm, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, ccAppData, cbAppDataVCL
+,
   Vcl.Imaging.pngimage;
 
 type
@@ -127,7 +128,7 @@ type
     procedure PrepareOutput24;
     procedure LoadInput32;
   public
-    procedure FormInitialize; {don't forget inherited LateInitialize!} override;
+    procedure FormPostInitialize; {don't forget inherited in FormPostInitialize!} override;
  end;
 
 VAR
@@ -144,15 +145,15 @@ USES
    {$IFDEF HardID} chHardID, {$ENDIF}
    {$IFDEF HBert}  GraphHBResize, {$ENDIF}
    {$IFDEF 3RDPARTY} janFXStretch, GraphSmoothResizeASM, GraphMadGraphics32, {$ENDIF}
-   cmMath, cmSound, cmDebugger, ccColors,
+   ccMath, cmSound, cmDebugger, ccColors,
    cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeWinGDI, cGraphResizeFMX, cGraphResizeWinWIC, cGraphResizeWinBlt, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeWinThumb;
 
 
 
 
-procedure TfrmResample.FormInitialize;
+procedure TfrmResample.FormPostInitialize;
 begin
- inherited FormInitialize;
+ inherited FormPostInitialize;
 
  btnHB.Visible      := AppData.RunningHome;
  btnHBQckDwn.Visible:= AppData.RunningHome;
@@ -177,7 +178,7 @@ end;
 
 procedure TfrmResample.FormDestroy(Sender: TObject);
 begin
- SaveForm(Self, flFull);
+ SaveForm(Self, asFull);
  FreeAndNil(BmpOut);
  FreeAndNil(Loader);
 end;
