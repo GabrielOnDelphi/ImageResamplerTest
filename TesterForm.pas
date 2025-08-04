@@ -25,7 +25,7 @@ UNIT TesterForm;
      In general, all tested algorithms seem suitable to resize down a high res image but some are faster than others.
      The story is different when you try to resize up (a small res image to high resolution).
 
-     The winner is Windows.StretchBlt. See StretchF in cGraphResizeWin.
+     The winner is Windows.StretchBlt. See StretchF in LightVcl.Graph.ResizeWin.
 
 
    Also see: https://msdn.microsoft.com/en-us/library/windows/desktop/dd162950(v=vs.85).aspx
@@ -38,8 +38,8 @@ USES
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
-  Vcl.Controls, Vcl.Forms, cbAppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  cvIniFile, ccCore, ccINIFile, cbAppDataForm, ccIO, cmIO, cvFileListBox, cvSplitter, cvMemo, cvCheckBox, cvPathEdit, ccAppData, cbAppDataVCL
+  Vcl.Controls, Vcl.Forms, LightVcl.Common.AppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
+  LightVcl.Visual.INIFile, LightCore, LightCore.INIFile, LightVcl.Common.AppDataForm, LightCore.IO, LightVcl.Common.IO, LightVcl.Visual.FileListBox, LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Common.AppData
 ,
   Vcl.Imaging.pngimage;
 
@@ -145,8 +145,8 @@ USES
    {$IFDEF HardID} chHardID, {$ENDIF}
    {$IFDEF HBert}  GraphHBResize, {$ENDIF}
    {$IFDEF 3RDPARTY} janFXStretch, GraphSmoothResizeASM, GraphMadGraphics32, {$ENDIF}
-   ccMath, cmSound, cmDebugger, ccColors,
-   cGraphResize, cGraphResizeVCL, cGraphResizeGr32, cGraphResizeWinGDI, cGraphResizeFMX, cGraphResizeWinWIC, cGraphResizeWinBlt, cGraphLoader, cGraphLoader.Resolution, cGraphBitmap, cGraphResizeWinThumb;
+   LightCore.Math, LightVcl.Common.Sound, LightVcl.Common.Debugger, LightVcl.Common.Colors,
+   LightVcl.Graph.Resize, LightVcl.Graph.ResizeVCL, LightVcl.Graph.ResizeGr32, LightVcl.Graph.ResizeWinGDI, LightVcl.Graph.ResizeFMX, LightVcl.Graph.ResizeWinWIC, LightVcl.Graph.ResizeWinBlt, LightVcl.Graph.Loader, LightVcl.Graph.Loader.Resolution, LightVcl.Graph.Bitmap, LightVcl.Graph.ResizeWinThumb;
 
 
 
@@ -159,7 +159,7 @@ begin
  btnHBQckDwn.Visible:= AppData.RunningHome;
  btnHBHard.Visible  := AppData.RunningHome;
 
- Path.Path:= AppData.CurFolder;
+ Path.Path:= AppData.ExeFolder;
 
  LoadForm(Self);
  AlphaBlend:= FALSE;
@@ -262,7 +262,7 @@ procedure TfrmResample.TimerStop(AlgorithmName: string; Time: Double);
 begin
   VAR s:= IntToStr(Round(Time))+ 'ms';
   {$IFDEF HardID}
-  s:= s+ ' / '+ ccCore.FormatBytes(ProcessCurrentMem, 2);
+  s:= s+ ' / '+ LightCore.FormatBytes(ProcessCurrentMem, 2);
   {$ENDIF}
   s:= s+ ' ['+ AlgorithmName+ '] ';
   Caption:= s;
@@ -272,7 +272,7 @@ end;
 
 function OutputFolder: string;
 begin
-  Result:= AppData.CurFolder+ 'Output\';
+  Result:= AppData.ExeFolder+ 'Output\';
   ForceDirectoriesMsg(Result);
 end;
 
@@ -400,7 +400,7 @@ begin
   LoadInput24;
 
   TimerStart;
-  cGraphResizeGr32.StretchGr32(BmpOut, Scale, Scale, spnGr32Filter.Value, MitchellKernel);
+  LightVcl.Graph.ResizeGr32.StretchGr32(BmpOut, Scale, Scale, spnGr32Filter.Value, MitchellKernel);
   TimerStop('03 Gr32-'+ i2s(spnGr32Filter.Value), TimerElapsed);
 
   ShowOutput(OutputFileName('03 Gr32 '+ i2s(spnGr32Filter.Value), TimerElapsed));
@@ -493,7 +493,7 @@ begin
   PrepareOutput24;
 
   TimerStart;
-  cGraphResizeVCL.ScaleImage(Loader, BmpOut, Scale);
+  LightVcl.Graph.ResizeVCL.ScaleImage(Loader, BmpOut, Scale);
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
@@ -512,7 +512,7 @@ begin
   PrepareOutput24;
 
   TimerStart;
-  cGraphResizeVCL.CanvasStretch(Loader, BmpOut);
+  LightVcl.Graph.ResizeVCL.CanvasStretch(Loader, BmpOut);
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
@@ -553,7 +553,7 @@ begin
   PrepareOutput24;
 
   TimerStart;
-  VAR ThumbObj:= cGraphResizeWinThumb.TFileThumb.Create;
+  VAR ThumbObj:= LightVcl.Graph.ResizeWinThumb.TFileThumb.Create;
   TRY
     ThumbObj.Width    := spnWidth.Value;
     ThumbObj.FilePath := Files.FileName;             // whenever you set a FilePath a new ThumbBmp is made
@@ -619,7 +619,7 @@ begin
   BmpOut.Assign(Loader);                       // Strange. MadShi requires the output image to be present in BmpOut
 
   TimerStart;
-  cGraphResizeWinWIC.ResizeBitmapWic(BmpOut, spnWidth.Value, NewHeight);  // pf32
+  LightVcl.Graph.ResizeWinWIC.ResizeBitmapWic(BmpOut, spnWidth.Value, NewHeight);  // pf32
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));
@@ -633,7 +633,7 @@ begin
   //BmpOut.Assign(Loader);
 
   TimerStart;
-  cGraphResizeWinGDI.ResizeBitmapGDI(Loader, BmpOut, spnWidth.Value, NewHeight);
+  LightVcl.Graph.ResizeWinGDI.ResizeBitmapGDI(Loader, BmpOut, spnWidth.Value, NewHeight);
   TimerStop(AlgorithmName, TimerElapsed);
 
   ShowOutput(OutputFileName(AlgorithmName, TimerElapsed));

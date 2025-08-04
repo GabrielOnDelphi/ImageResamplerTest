@@ -3,7 +3,7 @@
         <Base>True</Base>
         <AppType>Application</AppType>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+        <DCC_DLightCore.Compiler>DCC32</DCC_DLightCore.Compiler>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>ResamplerTester.dpr</MainSource>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -111,8 +111,8 @@
             <Form>frmResample</Form>
         </DCCReference>
         <DCCReference Include="..\LightSaber\cbAppData.pas"/>
-        <DCCReference Include="..\LightSaber\FormRamLog.pas"/>
-        <DCCReference Include="..\LightSaber\ccINIFile.pas"/>
+        <DCCReference Include="..\LightSaber\LightVcl.LogForm.pas"/>
+        <DCCReference Include="..\LightSaber\LightCore.INIFile.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
