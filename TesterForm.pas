@@ -39,7 +39,7 @@ USES
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
   Vcl.Controls, Vcl.Forms, LightVcl.Common.AppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  LightVcl.Visual.INIFile, LightCore, LightCore.INIFile, LightVcl.Common.AppDataForm, LightCore.IO, LightVcl.Common.IO, LightVcl.Visual.FileListBox, LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Common.AppData
+  LightVcl.Visual.INIFile, LightCore, LightCore.Time, LightCore.Types, LightCore.INIFile, LightVcl.Common.AppDataForm, LightCore.IO, LightVcl.Common.IO, LightVcl.Visual.FileListBox, LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Common.AppData
 ,
   Vcl.Imaging.pngimage;
 
