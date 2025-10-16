@@ -38,8 +38,8 @@ USES
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
-  Vcl.Controls, Vcl.Forms, LightVcl.Common.AppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  LightVcl.Visual.INIFile, LightCore, LightCore.Time, LightCore.Types, LightCore.INIFile, LightVcl.Common.AppDataForm, LightCore.IO, LightVcl.Common.IO, LightVcl.Visual.FileListBox, LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Common.AppData
+  Vcl.Controls, Vcl.Forms, LightVcl.Visual.AppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
+  LightVcl.Visual.INIFile, LightCore, LightCore.Time, LightCore.Types, LightCore.INIFile, LightVcl.Visual.AppDataForm, LightCore.IO, LightVcl.Common.IO, LightVcl.Visual.FileListBox, LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Visual.AppData
 ,
   Vcl.Imaging.pngimage;
 

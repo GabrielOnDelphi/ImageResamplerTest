@@ -7,7 +7,7 @@ uses
   WinApi.Windows,
   VCL.Forms,
   TesterForm in 'TesterForm.pas' {frmResample},
-  LightVcl.Common.AppData in '..\LightSaber\cbAppData.pas',
+  LightVcl.Visual.AppData in '..\LightSaber\cbAppData.pas',
   LightVcl.LogForm in '..\LightSaber\LightVcl.LogForm.pas',
   LightCore.INIFile in '..\LightSaber\LightCore.INIFile.pas';
 
