@@ -109,6 +109,7 @@
         </DelphiCompile>
         <DCCReference Include="TesterForm.pas">
             <Form>frmResample</Form>
+            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="..\LightSaber\cbAppData.pas"/>
         <DCCReference Include="..\LightSaber\LightVcl.LogForm.pas"/>
@@ -135,11 +136,7 @@
                 <Source>
                     <Source Name="MainSource">ResamplerTester.dpr</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k280.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp280.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\BionixVCL280.bpl">BioniX VCL</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
                 <VersionInfo>
                     <VersionInfo Name="IncludeVerInfo">True</VersionInfo>
                     <VersionInfo Name="AutoIncBuild">True</VersionInfo>
