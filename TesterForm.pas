@@ -159,7 +159,7 @@ begin
  btnHBQckDwn.Visible:= AppData.RunningHome;
  btnHBHard.Visible  := AppData.RunningHome;
 
- Path.Path:= AppData.ExeFolder;
+ Path.Path:= Appdata.AppFolder;
 
  LoadForm(Self);
  AlphaBlend:= FALSE;
@@ -272,7 +272,7 @@ end;
 
 function OutputFolder: string;
 begin
-  Result:= AppData.ExeFolder+ 'Output\';
+  Result:= Appdata.AppFolder+ 'Output\';
   ForceDirectoriesMsg(Result);
 end;
 
