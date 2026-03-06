@@ -3,12 +3,13 @@
         <Base>True</Base>
         <AppType>Application</AppType>
         <Config Condition="'$(Config)'==''">Debug</Config>
-        <DCC_DLightCore.Compiler>DCC32</DCC_DLightCore.Compiler>
+        <DCC_Compiler>DCC32</DCC_Compiler>
         <FrameworkType>VCL</FrameworkType>
         <MainSource>ResamplerTester.dpr</MainSource>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectGuid>{B698DB9F-C2C6-4FA3-A1D1-4A42D023AD4F}</ProjectGuid>
-        <ProjectVersion>19.5</ProjectVersion>
+        <ProjectName Condition="'$(ProjectName)'==''">ResamplerTester</ProjectName>
+        <ProjectVersion>20.4</ProjectVersion>
         <TargetedPlatforms>1</TargetedPlatforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
@@ -52,7 +53,7 @@
         <DCC_Namespace>Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;System;Xml;Data;Datasnap;Web;Soap;Winapi;$(DCC_Namespace)</DCC_Namespace>
         <DCC_Optimize>false</DCC_Optimize>
         <DCC_RangeChecking>true</DCC_RangeChecking>
-        <DCC_UnitSearchPath>c:\Projects\LightSaber\;c:\Projects-3rd_Packages\Third party packages\;c:\Projects-3rd_Packages\Third party packages\JanFX\;c:\Projects-3rd_Packages\Third party packages\FastJpeg\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>c:\Projects\LightSaber\;c:\Projects-3rd_Packages\Third party packages\;c:\Projects\LightSaber\frameVCL;c:\Projects\LightSaber\External\;c:\Projects\LightSaber\External\Exif\;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
         <DCC_UsePackage>vcl;rtl;IDE_String_Editor;xmlrtl;vclimg;ThirdPartyPack_XE;vclx;VclSmp;vclactnband;GR32_RSXE1;vclie;soaprtl;CubicControls_XE;CubicBiology_XE;BionixVCL_XE;$(DCC_UsePackage)</DCC_UsePackage>
         <Icon_MainIcon>$(BDS)\bin\delphi_PROJECTICON.ico</Icon_MainIcon>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
@@ -111,9 +112,10 @@
             <Form>frmResample</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\LightSaber\cbAppData.pas"/>
-        <DCCReference Include="..\LightSaber\LightVcl.LogForm.pas"/>
         <DCCReference Include="..\LightSaber\LightCore.INIFile.pas"/>
+        <DCCReference Include="..\LightSaber\FrameVCL\LightVcl.Visual.AppData.pas"/>
+        <DCCReference Include="..\LightSaber\FrameVCL\LightVcl.Visual.AppDataForm.pas"/>
+        <DCCReference Include="..\LightSaber\LightCore.AppData.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -174,6 +176,8 @@
                 <Platform value="OSXARM64">False</Platform>
                 <Platform value="Win32">True</Platform>
                 <Platform value="Win64">False</Platform>
+                <Platform value="Win64x">False</Platform>
+                <Platform value="WinARM64EC">False</Platform>
                 <Platform value="iOSDevice64">False</Platform>
                 <Platform value="iOSSimARM64">False</Platform>
             </Platforms>

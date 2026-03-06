@@ -38,10 +38,9 @@ USES
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Actions, System.Classes,
   FMX.Graphics, FMX.Surfaces,
-  Vcl.Controls, Vcl.Forms, LightVcl.Visual.AppDataForm,Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics,
-  LightVcl.Visual.INIFile, LightCore, LightCore.Time, LightCore.Types, LightCore.INIFile, LightVcl.Visual.AppDataForm, LightCore.IO, LightVcl.Common.IO, LightVcl.Visual.FileListBox, LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Visual.AppData
-,
-  Vcl.Imaging.pngimage;
+  Vcl.Controls, Vcl.Forms, Vcl.ExtCtrls, Vcl.FileCtrl, Vcl.ActnList, Vcl.StdCtrls, Spin, Vcl.Graphics, Vcl.Imaging.pngimage,
+  LightCore, LightCore.Time, LightCore.Types, LightCore.INIFile, LightCore.IO, LightVcl.Visual.FileListBox, LightVcl.Common.IO,
+  LightVcl.Visual.Splitter, LightVcl.Visual.Memo, LightVcl.Visual.CheckBox, LightVcl.Visual.PathEdit, LightCore.AppData, LightVcl.Visual.AppDataForm, LightVcl.Visual.AppData;
 
 type
   TfrmResample = class(TLightForm)
@@ -161,7 +160,6 @@ begin
 
  Path.Path:= Appdata.AppFolder;
 
- LoadForm(Self);
  AlphaBlend:= FALSE;
 
  Files.SelectFirstItem;
@@ -178,7 +176,6 @@ end;
 
 procedure TfrmResample.FormDestroy(Sender: TObject);
 begin
- SaveForm(Self, asFull);
  FreeAndNil(BmpOut);
  FreeAndNil(Loader);
 end;
