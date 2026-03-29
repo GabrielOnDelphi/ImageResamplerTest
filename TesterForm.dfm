@@ -2,8 +2,8 @@ object frmResample: TfrmResample
   Left = 1040
   Top = 171
   Caption = 'Resamplers test'
-  ClientHeight = 739
-  ClientWidth = 946
+  ClientHeight = 738
+  ClientWidth = 942
   Color = 16579836
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -21,7 +21,7 @@ object frmResample: TfrmResample
     Left = 3
     Top = 3
     Width = 206
-    Height = 733
+    Height = 732
     Align = alLeft
     BevelOuter = bvNone
     ParentColor = True
@@ -55,7 +55,7 @@ object frmResample: TfrmResample
         Align = alTop
         Caption = 'Input image'
       end
-      object Files: TCubicFileList
+      object Files: TLightFileList
         Left = 0
         Top = 54
         Width = 200
@@ -75,7 +75,7 @@ object frmResample: TfrmResample
         TabOrder = 1
         OnDblClick = FilesDblClick
       end
-      object Path: TCubicPathEdit
+      object Path: TlightPathEdit
         Left = 0
         Top = 0
         Width = 200
@@ -125,7 +125,7 @@ object frmResample: TfrmResample
       Left = 3
       Top = 239
       Width = 200
-      Height = 491
+      Height = 490
       Align = alClient
       BevelOuter = bvNone
       ParentColor = True
@@ -254,11 +254,11 @@ object frmResample: TfrmResample
         TabOrder = 10
         WordWrap = True
       end
-      object chkTrimRam: TCubicCheckBox
+      object chkTrimRam: TLightCheckBox
         AlignWithMargins = True
         Left = 3
         Top = 473
-        Width = 194
+        Width = 106
         Height = 15
         Hint = 
           'Minimizes the amount to RAM used by application by swapping the ' +
@@ -327,11 +327,11 @@ object frmResample: TfrmResample
           Value = 1920
         end
       end
-      object chkStretch: TCubicCheckBox
+      object chkStretch: TLightCheckBox
         AlignWithMargins = True
         Left = 3
         Top = 452
-        Width = 194
+        Width = 101
         Height = 15
         Hint = 'Stretch the preview image'
         Align = alBottom
@@ -342,11 +342,11 @@ object frmResample: TfrmResample
         OnClick = chkStretchClick
         AutoSize = True
       end
-      object chkSaveOutput: TCubicCheckBox
+      object chkSaveOutput: TLightCheckBox
         AlignWithMargins = True
         Left = 3
         Top = 431
-        Width = 194
+        Width = 121
         Height = 15
         Hint = 'Stretch the preview image'
         Align = alBottom
@@ -378,8 +378,8 @@ object frmResample: TfrmResample
   object Panel7: TPanel
     Left = 212
     Top = 0
-    Width = 734
-    Height = 739
+    Width = 730
+    Height = 738
     Align = alClient
     Caption = 'Panel7'
     TabOrder = 1

@@ -67,13 +67,13 @@ type
     btnMsThumbnails         : TButton;
     btnResizeMMX            : TButton;
     Button2                 : TButton;
-    chkTrimRam              : TCubicCheckBox;
+    chkTrimRam              : TLightCheckBox;
     CubicSplitter1          : TCubicSplitter;
-    Files                   : TCubicFileList;
+    Files                   : TLightFileList;
     Panel1                  : TPanel;
     Panel2                  : TPanel;
     Panel3                  : TPanel;
-    Path                    : TCubicPathEdit;
+    Path                    : TlightPathEdit;
     spnJan                  : TSpinEdit;
     spnGr32Filter           : TSpinEdit;
     btnHBQckDwn             : TButton;
@@ -88,8 +88,8 @@ type
     Panel7                  : TPanel;
     Panel6                  : TPanel;
     Preview                 : TImage;
-    chkStretch              : TCubicCheckBox;
-    chkSaveOutput           : TCubicCheckBox;
+    chkStretch              : TLightCheckBox;
+    chkSaveOutput           : TLightCheckBox;
     Button1                 : TButton;
     actWic                  : TAction;
     Button3                 : TButton;
