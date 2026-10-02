@@ -144,8 +144,8 @@ USES
    {$IFDEF HardID} chHardID, {$ENDIF}
    {$IFDEF HBert}  GraphHBResize, {$ENDIF}
    {$IFDEF 3RDPARTY} janFXStretch, GraphSmoothResizeASM, GraphMadGraphics32, {$ENDIF}
-   LightCore.Math, LightVcl.Common.Sound, LightCore.Debugger, LightVcl.Common.Debugger, LightVcl.Common.Colors,
-   LightVcl.Graph.Resize, LightVcl.Graph.ResizeVCL, LightVcl.Graph.ResizeGr32, LightVcl.Graph.ResizeWinGDI, LightVcl.Graph.ResizeFMX, LightVcl.Graph.ResizeWinWIC, LightVcl.Graph.ResizeWinBlt, LightVcl.Graph.Loader, LightVcl.Graph.Loader.Resolution, LightVcl.Graph.Bitmap, LightVcl.Graph.ResizeWinThumb;
+   LightCore.Math, LightCore.Sound, LightCore.Debugger, LightVcl.Common.Debugger, LightCore.Colors,
+   LightVcl.Graph.Resize, LightVcl.Graph.ResizeVCL, LightVcl.Graph.ResizeGr32, LightVcl.Graph.ResizeWinGDI, LightVcl.Graph.ResizeFMX, LightVcl.Graph.ResizeWinWIC, LightVcl.Graph.ResizeWinBlt, LightVcl.Graph.Loader, LightCore.Graph.Loader.Resolution, LightVcl.Graph.Bitmap, LightVcl.Graph.ResizeWinThumb;
 
 
 
