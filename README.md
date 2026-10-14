@@ -28,6 +28,7 @@ If you don't have access to their source code, you will have to switch off the {
     
 **Test program**   
 Precompiled EXE file and test images (high res/low res) available.   
+The program needs the [LightSaber](https://github.com/GabrielOnDelphi/Delphi-LightSaber) library. The Debug build also uses FastMM4 and the optional [Autopilot for Delphi](https://gabrielmoraru.com/my-delphi-code/autopilot-for-delphi/) bridge, which lets an AI assistant drive the running app.   
 
  ------------------------------------------------------------------------------------------------------------
 
